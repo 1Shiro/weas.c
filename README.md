@@ -1,2 +1,0 @@
-# weas.c
-asdas
