@@ -1,0 +1,133 @@
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+void menu(){
+system(clear);
+printf("Ingrese su opcion preferida:\n");
+printf("1) Realizar la operacion deseada\n");
+printf("2) Volver al Menu principal\n");
+}
+int validarOperacion(char c, char* n1, char* n2){
+if(c!=’+’ && c!=’-’ && c!=’*’ && c!=’/’ ) return 0;
+if(strlen(n1)==0 || strlen(n2)==0) return 0;
+int contadorDePuntos = 0;
+for(int i=0;n1[i]!=’\0’;++i){
+if(n1[i]==’.’){
+contadorDePuntos++;
+if(contadorDePuntos>1) return 0;
+}else if(n1[i]>’9’||n1[i]<’0’){
+return 0;
+}
+}
+contadorDePuntos = 0;
+for(int i=0;n2[i]!=’\0’;++i){
+if(n2[i]==’.’){
+contadorDePuntos++;
+if(contadorDePuntos>1) return 0;
+}else if(n2[i]>’9’||n2[i]<’0’){
+return 0;
+}
+}
+return 1;
+}
+int validarNumeros(char* n1, char* n2){
+if(strlen(n1)==0 || strlen(n2)==0) return 0;
+for(int i=0;n1[i]!=’\0’;++i){
+if(n1[i]>’9’||n1[i]<’0’){
+return 0;
+}
+}
+for(int i=0;n2[i]!=’\0’;++i){
+if(n2[i]>’9’||n2[i]<’0’){
+return 0;
+}
+}
+return 1;
+}
+int main(){
+char instruccion[100];
+int success = 0;
+int success2 = 0;
+int op;
+do{
+system(clear);
+printf("Ingrese una de las siguientes instrucciones para proseguir:
+operacion, mcm, mcd o salir: ");
+scanf(" %s",instruccion);
+getchar();//limpia el buffer
+if(strcmp(instruccion,"operacion")){
+success2=0;
+do{
+menu();
+scanf(" %d",&op);
+getchar();//limpia el buffer
+switch(op){
+case 1:
+char c;
+char num1[50];
+char num2[50];
+do{
+printf("Ingrese un caracter, correspondiente a la operacion y dos numeros flotantes:");
+scanf(" %c %s %s",&c, num1,num2);
+getchar();//limpia el buffer
+}while(!validarOperacion(c,num1,num2));
+printf("Resultado es: %lf\n",operacion(c,atof(num1),atof(num2)))
+success2=1;
+break;
+case 2:
+success2=1;
+}
+}while(success2=0);
+}
+if(strcmp(instruccion,"mcm")==0){
+success2=0;
+do{
+menu();
+scanf(" %d",&op);
+getchar();//limpia el buffer
+switch(op){
+case 1:
+char num1[50];
+char num2[50];
+do{
+printf("Ingrese dos numeros enteros:");
+scanf(" %c %s %s",&c, num1,num2);
+getchar();//limpia el buffer
+}while(!validarNumeros(num1,num2));
+printf("Resultado es: %lld\n",mcm(atoll(num1),atoll(num2)))
+success2=1;
+break;
+case 2:
+success2=1;
+}
+}while(success2=0);
+}
+if(strcmp(instruccion,"mcd")==0){
+success2=0;
+do{
+menu();
+scanf(" %d",&op);
+getchar();//limpia el buffer
+switch(op){
+case 1:
+char num1[50];
+char num2[50];
+do{
+printf("Ingrese dos numeros enteros:");
+scanf(" %c %s %s",&c, num1,num2);
+getchar();//limpia el buffer
+}while(!validarNumeros(num1,num2));
+printf("Resultado es: %lld\n",mcd(atoll(num1),atoll(num2)))
+success2=1;
+break;
+case 2:
+success2=1;
+}
+}while(success2=0);
+}
+if(strcmp(instruccion,"salir")==0){
+success=1;
+}
+}while(success==0);
+return(0);
+}
