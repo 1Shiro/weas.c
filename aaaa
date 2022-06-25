@@ -1,0 +1,18 @@
+char palindromo(char *char1){
+  int len=strlen(char1);
+  char fakeChar1[len], aux;
+
+  strcpy(fakeChar1, char1);
+
+  for(int i=0; i<len/2; i++){
+    aux = char1[i];
+    char1[i]=char1[len-i-1];
+    char1[len-i-1]=aux;
+  }
+
+  if(memcmp(fakeChar1, char1, len)==0){
+    return 1;
+  }else{
+    return 0;
+  }
+}
