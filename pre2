@@ -1,0 +1,156 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct{
+    char nombre [100];
+    unsigned char edad;
+    double agresividad;
+}Fanatico;
+
+typedef struct{
+    char nombre [100];
+    unsigned char edad;
+    char posicion [9];
+    float regate;
+    float defensa;
+    float reflejos;
+    float velocidad;
+    float dureza;
+    float resistencia;
+}Jugador;
+
+typedef struct{
+    char nombre [100];
+    unsigned char edad;
+    char rol [25];
+    unsigned char experiencia; 
+}Staff;
+
+typedef struct{
+    char nombre [100];
+    int anyofundacion;
+    Staff* staff;
+    int numStaff[6];
+    Jugador* jugadores;
+    int numJugadores[4];
+    Fanatico* fanaticos;
+    int numFanaticos;
+}Equipo;
+
+Fanatico* crearfanaticos(int numFanaticos){
+    Fanatico* fans = malloc(sizeof(Fanatico) * numFanaticos);    
+    for (int j = 0; j < numFanaticos; j++){      
+        for (int i = 0; i < rand()%97+3; i++){
+            fans [j].nombre[i] = rand()%26+97;
+        } 
+        fans [j].edad = rand()%150+1;
+        fans [j].agresividad = rand()%999; //el numero puede ser mayor, abarcando todo el rango double
+    }
+    return (fans);
+}
+
+void liberarFanaticos(Fanatico* fans){
+    free (fans);
+}
+
+Staff* crearStaff(int numDT, int numPrepArq, int numPrepFis, int numAsis, int numFisio, int numDoc){
+
+    Staff* staff = malloc(sizeof(Staff) * (numDT + numPrepArq + numPrepFis + numAsis + numFisio + numDoc)); 
+
+    for (int i = 0; i < numDT + numPrepArq + numPrepFis + numAsis + numFisio + numDoc; i++){
+         for (int j = 0; j < rand()%97+3; j++){
+            staff [i].nombre[j] = rand()%26+97;
+        }
+        staff [i].edad = rand()%150;   
+        staff [i].experiencia = rand()%256+1;
+
+        if (i < numDT)  
+            strcpy(staff [i].rol, "DT");
+        if (i >= numDT && i < (numDT+numPrepArq))
+            strcpy(staff [i].rol, "Preparador Arquero");
+        if (i >= (numDT+numPrepArq) && i < (numDT+numPrepArq+numPrepFis))
+            strcpy(staff [i].rol, "Preparador Fisico");
+        if (i >= (numDT+numPrepArq+numPrepFis) && i < (numDT+numPrepArq+numPrepFis+numAsis))
+            strcpy(staff [i].rol, "Asistente");
+        if (i >= (numDT+numPrepArq+numPrepFis+numAsis) && i < (numDT+numPrepArq+numPrepFis+numAsis+numFisio))
+            strcpy(staff [i].rol, "Fisioterapeuta");
+        if (i >= (numDT+numPrepArq+numPrepFis+numAsis+numFisio)) 
+            strcpy(staff [i].rol, "Doctor");
+    }
+    return (staff);
+}
+
+void liberarStaff(Staff* staff){
+    free (staff);  
+}
+
+Jugador* crearJugadores(int numArq, int numDef, int numCent, int numDel){
+
+    Jugador* jugadores = malloc(sizeof(Jugador) * (numArq + numDef + numCent + numDel));
+
+    for (int i = 0; i < numArq + numDef + numCent + numDel; i ++){
+        for (int j = 0; j < rand()%97+3; j++){
+            jugadores [i].nombre[j] = rand()%26+97; 
+        }
+        jugadores [i].edad = rand()%150;
+        jugadores [i].regate = rand()%1001;
+        jugadores [i].defensa = rand()%1001;
+        jugadores [i].reflejos = rand()%1001;
+        jugadores [i].velocidad = rand()%1001;
+        jugadores [i].dureza = rand()%1001;
+        jugadores [i].resistencia = rand()%1001;
+
+        if (i < numArq)
+            strcpy (jugadores [i].posicion, "Arquero");
+        if (i >= numArq && i <= (numArq+numDef))
+            strcpy (jugadores [i].posicion, "Defensa");
+        if (i >= (numArq+numDef) && i < (numArq+numDef+numCent))
+            strcpy (jugadores [i].posicion, "Medio");
+        if (i >= (numArq+numDef+numCent))
+            strcpy (jugadores [i].posicion, "Delantero"); 
+    }
+    return (jugadores);
+}
+
+void liberarJugadores(Jugador* jugadores){
+    free (jugadores);
+}
+
+Equipo* crearEquipos(int numEquipos){
+
+    Equipo* equipos = malloc(sizeof(Equipo) * numEquipos);
+
+    for (int i = 0; i < numEquipos; i++){
+        int numDT = rand()%100+1, numPrepArq = rand()%100+1, numPrepFis = rand()%100+1, numAsis = rand()%100+1, numFisio = rand()%100+1, numDoc = rand()%100+1;
+        int numArq = rand()%100+1, numDef = rand()%100+1, numCent = rand()%100+1, numDel = rand()%100+1, numFanaticos = rand()%9999999+1;
+
+        for (int j = 0; j < rand()%97+3; j++){
+            equipos [i].nombre[j] = rand()%26+97; 
+        }
+        equipos [i].anyofundacion = rand()%2023;
+        equipos [i].staff = crearStaff(numDT, numPrepArq, numPrepFis, numAsis, numFisio, numDoc);
+        equipos [i].numStaff[0] = numDT;
+        equipos [i].numStaff[1] = numPrepArq;
+        equipos [i].numStaff[2] = numPrepFis;
+        equipos [i].numStaff[3] = numAsis;
+        equipos [i].numStaff[4] = numFisio;
+        equipos [i].numStaff[5] = numDoc;
+        equipos [i].jugadores = crearJugadores(numArq, numDef, numCent, numDel);    
+        equipos [i].numJugadores[0] = numArq;
+        equipos [i].numJugadores[1] = numDef; 
+        equipos [i].numJugadores[2] = numCent; 
+        equipos [i].numJugadores[3] = numDel;
+        equipos [i].fanaticos = crearfanaticos(numFanaticos); 
+        equipos [i].numFanaticos = numFanaticos; 
+    }
+}
+
+void liberarEquipos(Equipo* equipos, int numEquipos){
+    for (int i = 0; i < numEquipos; i++){
+        free (equipos [i].staff);
+        free (equipos [i].jugadores);
+        free (equipos [i].fanaticos);
+    }
+    free (equipos);
+}
